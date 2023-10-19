@@ -1,2 +1,2 @@
-# telegrat
+# chatrat
 RAT over Telegram
