@@ -1,2 +1,2 @@
 # chatrat
-RAT over Telegram
+RAT over Online chat services :)
