@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -28,11 +29,21 @@ func NewConn(token, id string) *TelegramBot {
 	return bot
 }
 
+// TODO: remove testing stuff
 func (tb TelegramBot) SendMessage() {
+	hn, err := os.Hostname()
+	if err != nil {
+		hn = "Unkown"
+	}
 	message := tgbotapi.NewMessage(tb.ChatID, "")
-	message.Text = "Test"
+	message.Text = fmt.Sprintf("[%s] Hello from %s", hn, tb.SlaveID)
 	fmt.Println("Sending message...")
-	panic(errors.New("Not implemented"))
+
+	_, err = tb.Bot.Send(message)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 func (tb TelegramBot) ReceiveMessage() {
