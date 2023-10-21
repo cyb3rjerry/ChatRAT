@@ -1,73 +1,53 @@
 package telegram
 
 import (
-	"errors"
 	"fmt"
-	"log"
-	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-type TelegramBot struct {
-	SlaveID string
-	ChatID  int64
-	Bot     *tgbotapi.BotAPI
+type TelegramConfig struct {
+	ApiKey    string
+	ChannelID int64
 }
 
-func NewConn(token, id string) *TelegramBot {
+type TelegramBot struct {
+	ChannelID int64
+	Bot       *tgbotapi.BotAPI
+}
+
+func NewConn(config TelegramConfig) *TelegramBot {
 	bot := new(TelegramBot)
-	botInstance, err := tgbotapi.NewBotAPI(token)
+	botInstance, err := tgbotapi.NewBotAPI(config.ApiKey)
 	if err != nil {
 		panic(err)
 	}
 
-	bot.SlaveID = id
 	bot.Bot = botInstance
-	bot.ChatID = -1002121011166 //TODO: Handle this better, not a fan of hardcoding the channel
+	bot.ChannelID = config.ChannelID
 
 	return bot
 }
 
 // TODO: remove testing stuff
 func (tb TelegramBot) SendMessage() {
-	hn, err := os.Hostname()
-	if err != nil {
-		hn = "Unkown"
-	}
-	message := tgbotapi.NewMessage(tb.ChatID, "")
-	message.Text = fmt.Sprintf("[%s] Hello from %s", hn, tb.SlaveID)
 	fmt.Println("Sending message...")
-
-	_, err = tb.Bot.Send(message)
-	if err != nil {
-		panic(err)
-	}
+	panic("Not implemented")
 
 }
 
+// TODO: remove testing stuff
 func (tb TelegramBot) ReceiveMessage() {
-	updateConfig := tgbotapi.NewUpdate(0)
-
-	updateConfig.Timeout = 30
-
-	updates := tb.Bot.GetUpdatesChan(updateConfig)
-
-	for update := range updates {
-		if update.Message == nil {
-			continue
-		}
-
-		log.Printf("Received '%s' from %s in group %#v", update.Message.Text, update.SentFrom().String(), update.FromChat())
-	}
+	fmt.Println("Receiving message...")
+	panic("Not implemented")
 }
 
 func (tb TelegramBot) SendMedia() {
 	fmt.Println("Sending media...")
-	panic(errors.New("Not implemented"))
+	panic("Not implemented")
 }
 
 func (tb TelegramBot) ReceiveMedia() {
 	fmt.Println("Receiving media...")
-	panic(errors.New("Not implemented"))
+	panic("Not implemented")
 }

@@ -1,4 +1,4 @@
-module github.com/CoveoSec/chatrat
+module github.com/cyb3rjerry/ChatRAT
 
 go 1.20
 

