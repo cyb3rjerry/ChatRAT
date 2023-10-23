@@ -12,9 +12,9 @@ type SlackBot struct {
 	// TODO
 }
 
-func NewConn(config SlackConfig) *SlackBot {
+func NewConn(config SlackConfig) (*SlackBot, error) {
 	// TODO
-	return nil
+	return nil, nil
 }
 
 // TODO: remove testing stuff

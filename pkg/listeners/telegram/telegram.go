@@ -16,17 +16,17 @@ type TelegramBot struct {
 	Bot       *tgbotapi.BotAPI
 }
 
-func NewConn(config TelegramConfig) *TelegramBot {
+func NewConn(config TelegramConfig) (*TelegramBot, error) {
 	bot := new(TelegramBot)
 	botInstance, err := tgbotapi.NewBotAPI(config.ApiKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	bot.Bot = botInstance
 	bot.ChannelID = config.ChannelID
 
-	return bot
+	return bot, nil
 }
 
 // TODO: remove testing stuff

