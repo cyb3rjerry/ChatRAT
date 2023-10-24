@@ -13,10 +13,10 @@ type ListenerConfig interface {
 }
 
 type Listener interface {
-	SendMessage()
-	ReceiveMessage()
-	SendMedia()
-	ReceiveMedia()
+	SendMessage(string) error
+	GetMessages() ([]string, error)
+	SendMedia(string, string) error
+	GetLatestMedia(string) error
 }
 
 func NewListener[T ListenerConfig](config T) (Listener, error) {

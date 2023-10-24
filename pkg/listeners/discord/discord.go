@@ -18,24 +18,24 @@ func NewConn(config DiscordConfig) (*DiscordBot, error) {
 }
 
 // TODO: remove testing stuff
-func (tb DiscordBot) SendMessage() {
+func (db DiscordBot) SendMessage(content string) error {
 	fmt.Println("Sending message...")
 	panic("Not implemented")
 
 }
 
 // TODO: remove testing stuff
-func (tb DiscordBot) ReceiveMessage() {
+func (db DiscordBot) GetMessages() ([]string, error) {
 	fmt.Println("Receiving message...")
 	panic("Not implemented")
 }
 
-func (tb DiscordBot) SendMedia() {
+func (db DiscordBot) SendMedia(text, fPath string) error {
 	fmt.Println("Sending media...")
 	panic("Not implemented")
 }
 
-func (tb DiscordBot) ReceiveMedia() {
+func (db DiscordBot) GetLatestMedia(outPath string) error {
 	fmt.Println("Receiving media...")
 	panic("Not implemented")
 }

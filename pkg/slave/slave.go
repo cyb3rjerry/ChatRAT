@@ -24,7 +24,12 @@ func NewSlave[T listeners.ListenerConfig](config T) *Slave {
 	s := new(Slave)
 
 	s.ID = shortuuid.New()
-	s.Listener = listeners.NewListener(config)
+	l, err := listeners.NewListener(config)
+	s.Listener = l
+	if err != nil {
+		// fixme
+		panic(err)
+	}
 
 	// This feels weird but is meant to save this information
 	// in memory to avoid constantly making suspicious syscalls
